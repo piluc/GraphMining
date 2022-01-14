@@ -1,9 +1,10 @@
 using Graphs
+using Plots
 using StatsBase
 
-function distances(graph::String, x)::Array{Int64}
+function distances(graph::String, x::Int64)::Array{Int64}
     g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
-    d::Array{Int64} = gdistances(g, 1)
+    d::Array{Int64} = gdistances(g, x)
     return d
 end
 
@@ -17,36 +18,31 @@ function degrees_of_separation(graph::String)::Float64
     return s / (nv(g) * (nv(g) - 1))
 end
 
-# g = loadgraph("/Users/piluc/icloud/books/ars/grafi/slashdot.lg", "graph")
-# degree = degree_centrality(g, normalize=false)
-# println(maximum(degree))
-# println(minimum(degree))
-# c = is_connected(g)
-# println(c)
+function min_max_degree(graph::String)::Tuple{Int64,Int64}
+    g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
+    degree::Array{Int64} = degree_centrality(g, normalize = false)
+    return minimum(degree), maximum(degree)
+end
 
-# g = loadgraph("/Users/piluc/icloud/books/ars/grafi/slashdot.lg", "graph")
-# frequencies = zeros(Int64, nv(g) - 1)
-# for x in vertices(g)
-#     d = gdistances(g, x)
-#     f = counts(d, 1:nv(g) - 1)
-#     global frequencies = frequencies + f
-# end
-# println(frequencies / (nv(g) * (nv(g) - 1)))
+function distance_distribution(graph::String)::Array{Float64}
+    g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
+    dd::Array{Int64} = zeros(Int64, nv(g) - 1)
+    for x::Int64 in vertices(g)
+        dd = dd + counts(gdistances(g, x), 1:nv(g)-1)
+    end
+    return dd / (nv(g) * (nv(g) - 1))
+end
 
-# frequencies = zeros(Int64, nv(g) - 1)
-# k = 100 * trunc(log2(nv(g)))
-# for e in 1:k
-#     x = rand(1:nv(g))
-#     d = gdistances(g, x)
-#     f = counts(d, 1:nv(g)-1)
-#     global frequencies = frequencies + f
-# end
-# maxzero = 0
-# for i in 1:nv(g)-1
-#     if (frequencies[i] > 0)
-#         global maxzero = i
-#     end
-# end
-# println("Maximum non zero value: ", maxzero)
-# frequencies = frequencies / (k * (nv(g) - 1))
-# println(frequencies[1:maxzero])
+function degrees_of_separation(dd::Array{Float64})::Float64
+    last_distance::Int64 = findlast(x -> x > 0, dd)
+    return dot(1:last_distance, dd[1:last_distance])
+end
+
+function distance_distribution(graph::String, k::Int64)::Array{Float64}
+    g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
+    dd::Array{Int64} = zeros(Int64, nv(g) - 1)
+    for _ in 1:k
+        dd = dd + counts(gdistances(g, rand(1:nv(g))), 1:nv(g)-1)
+    end
+    return dd / (k * (nv(g) - 1))
+end
