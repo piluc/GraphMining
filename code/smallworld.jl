@@ -1,4 +1,5 @@
 using Graphs
+using LinearAlgebra
 using Plots
 using StatsBase
 
@@ -45,4 +46,16 @@ function distance_distribution(graph::String, k::Int64)::Array{Float64}
         dd = dd + counts(gdistances(g, rand(1:nv(g))), 1:nv(g)-1)
     end
     return dd / (k * (nv(g) - 1))
+end
+
+function imdb_degrees_separation(f_year::Int64, l_year::Int64, step::Int64)::Array{Float64}
+    ds::Array{Float64} = zeros(1 + (l_year - f_year) ÷ step)
+    for year in f_year:step:l_year
+        graph::String = "imdb/imdb$year.lg"
+        g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
+        k::Int64 = 100 * trunc(log2(nv(g)))
+        dd::Array{Float64} = distance_distribution(graph, k)
+        ds[1+(year-f_year)÷step] = degrees_of_separation(dd)
+    end
+    return ds
 end
