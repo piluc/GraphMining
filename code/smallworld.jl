@@ -1,8 +1,3 @@
-using Graphs
-using LinearAlgebra
-using Plots
-using StatsBase
-
 function distances(graph::String, x::Int64)::Array{Int64}
     g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
     d::Array{Int64} = gdistances(g, x)
