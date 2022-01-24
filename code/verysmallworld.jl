@@ -30,35 +30,14 @@ end
 function ifub(graph::String, u::Int64)::Tuple{Int64,Int64}
     g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
     d::Array{Int64}, nbfs::Int64 = gdistances(g, u), 1
-    ordered_node_index::Array{Int64} = sortperm(d, rev = true)
-    c::Int64, i::Int64 = 1, d[ordered_node_index[1]]
-    L::Int64, U = 0, 2 * (i - 1) + 1
+    node_index::Array{Int64} = sortperm(d, alg = RadixSort, rev = true)
+    c::Int64, i::Int64, L::Int64, U::Int64 = 1, d[node_index[1]], 0, nv(g)
     while (L < U)
-        L, nbfs = max(L, maximum(gdistances(g, ordered_node_index[c]))), nbfs + 1
-        c = c + 1
-        if (d[ordered_node_index[c]] == i - 1)
-            i = i - 1
-            U = 2 * (i - 1) + 1
+        U, L = nv(g), max(L, maximum(gdistances(g, node_index[c])))
+        nbfs, c = nbfs + 1, c + 1
+        if (d[node_index[c]] == i - 1)
+            U, i = 2 * (i - 1), i - 1
         end
     end
-    # for u in 1:nv(g)
-    #     if d[u] == i
-    #         lb = max(lb, maximum(gdistances(g, u)))
-    #         nbfs = nbfs + 1
-    #     end
-    # end
-    # while lb <= 2 * (i - 1)
-    #     i = i - 1
-    #     for u in 1:nv(g)
-    #         if d[u] == i
-    #             du = gdistances(g, u)
-    #             nbfs = nbfs + 1
-    #             eccu = maximum(du)
-    #             if lb < eccu
-    #                 lb = eccu
-    #             end
-    #         end
-    #     end
-    # end
     return L, nbfs
 end
