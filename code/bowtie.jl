@@ -1,8 +1,9 @@
-function bowtie(g)
-    group = zeros(Int64, nv(g))
-    scc = strongly_connected_components(g)
-    lscc_index = argmax(length.(scc))
-    lscc = scc[lscc_index]
+function bowtie(graph::String)::Array{Int64}
+    g::SimpleDiGraph{Int64} = loadgraph("graphs/" * graph, "graph")
+    group::Array{Int64} = zeros(Int64, nv(g))
+    scc::Array{Array{Int64}} = strongly_connected_components(g)
+    lscc_index::Int64 = argmax(length.(scc))
+    lscc::Array{Int64} = scc[lscc_index]
     println("|SCC|=", length(lscc))
     for u in 1:length(lscc)
         group[lscc[u]] = 1
@@ -14,9 +15,9 @@ function bowtie(g)
     return group
 end
 
-function group_out(g, u, group)
-    visited = falses(nv(g))
-    queue = Vector()
+function group_out(g::SimpleDiGraph{Int64}, u::Int64, group::Array{Int64})::Nothing
+    visited::Array{Bool} = falses(nv(g))
+    queue::Array{Int64} = Vector()
     visited[u] = true
     push!(queue, u)
     while !isempty(queue)
@@ -33,10 +34,10 @@ function group_out(g, u, group)
     end
 end
 
-function group_in(g, u, group)
-    rg = reverse(g)
-    visited = falses(nv(rg))
-    queue = Vector()
+function group_in(g::SimpleDiGraph{Int64}, u::Int64, group::Array{Int64})::Nothing
+    rg::SimpleDiGraph{Int64} = reverse(g)
+    visited::Array{Bool} = falses(nv(rg))
+    queue::Array{Int64} = Vector()
     visited[u] = true
     push!(queue, u)
     while !isempty(queue)
@@ -53,9 +54,9 @@ function group_in(g, u, group)
     end
 end
 
-function group_tendril_in(g, group)
-    visited = falses(nv(g))
-    queue = Vector()
+function group_tendril_in(g::SimpleDiGraph{Int64}, group::Array{Int64})::Nothing
+    visited::Array{Bool} = falses(nv(g))
+    queue::Array{Int64} = Vector()
     for u in 1:nv(g)
         if (group[u] == 2)
             visited[u] = true
@@ -79,10 +80,10 @@ function group_tendril_in(g, group)
     end
 end
 
-function group_tendril_out(g, group)
-    rg = reverse(g)
-    visited = falses(nv(rg))
-    queue = Vector()
+function group_tendril_out(g::SimpleDiGraph{Int64}, group::Array{Int64})::Nothing
+    rg::SimpleDiGraph{Int64} = reverse(g)
+    visited::Array{Bool} = falses(nv(rg))
+    queue::Array{Int64} = Vector()
     for u in 1:nv(rg)
         if (group[u] == 3)
             visited[u] = true
@@ -107,15 +108,4 @@ function group_tendril_out(g, group)
             end
         end
     end
-end
-
-function one_experiment(n, alpha, p)
-    g = grass_hop_rb(n, alpha)
-    clean(g, p)
-    cc = connected_components(g)
-    lcc_index = argmax(length.(cc))
-    lcc_g = induced_subgraph(g2, cc[lcc_index])[1]
-    u = max_degree_node(lcc_g)
-    diameter = ifub(lcc_g, u)
-    return nv(lcc_g), diameter
 end

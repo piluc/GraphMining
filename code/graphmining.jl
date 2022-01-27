@@ -10,3 +10,4 @@ using StatsBase
 include("smallworld.jl")
 include("verysmallworld.jl")
 include("centralitymeasures.jl")
+include("bowtie.jl")
