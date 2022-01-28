@@ -1,3 +1,23 @@
+function number_triangles(graph::String)
+    g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
+    d::Array{Int64} = degree_centrality(g, normalize = false)
+    c::Int64 = 0
+    for u in 1:nv(g)
+        for v in neighbors(g, u)
+            if (d[v] > d[u] || (d[v] == d[u] && v > u))
+                for w in neighbors(g, u)
+                    if (d[w] > d[v] || (d[w] == d[v] && w > v))
+                        if has_edge(g, v, w)
+                            c = c + 1
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return c
+end
+
 function bowtie(graph::String)::Array{Int64}
     g::SimpleDiGraph{Int64} = loadgraph("graphs/" * graph, "graph")
     group::Array{Int64} = zeros(Int64, nv(g))
