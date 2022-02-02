@@ -3,4 +3,4 @@ This is the repository associated with the lecture notes *Graph Mining: Efficien
 
 The associated HTML lides are available at the following addresses.
 
-1. [Introduction](https://slides.com/piluc/graph-mining-01?token=_epF12dA)
+1. <a href="https://slides.com/piluc/graph-mining-01?token=_epF12dA" target="_blank">Introduction</a>
