@@ -24,7 +24,7 @@ docs/site/
 Manifest.toml
 
 # Graphs
-graphs/
+# graphs/
 
 # Mac OS X files
 .DS_Store
