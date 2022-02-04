@@ -25,6 +25,7 @@ Manifest.toml
 
 # Graphs
 # graphs/
+local/
 
 # Mac OS X files
 .DS_Store
