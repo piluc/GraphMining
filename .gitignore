@@ -26,6 +26,7 @@ Manifest.toml
 # Graphs
 # graphs/
 local/
+.vscode/
 
 # Mac OS X files
 .DS_Store
