@@ -13,8 +13,12 @@ arr_years=[
             "1990","1991","1992","1993","1994","1995","1996","1997","1998","1999","2000","2001","2002","2003","2004","2005",
             "2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021"
         ]
-# createMatrix3DWGraph("./graphs/icalpw/icalpw",arr_years,false)
-# createMatrix3DWGraph("./graphs/icalpw/icalpw",arr_years,true)
-
+createMatrix3DWGraph("./graphs/icalpw/icalpw",arr_years,false)
+println("Matrix3D created")
+createMatrix3DWGraph("./graphs/icalpw/icalpw",arr_years,true)
+println("Matrix3D Enriched created")
 manyPlotsSimpleGraphs("./graphs/icalp/icalp",arr_years,false)
+println("Plot simple created")
 manyPlotsSimpleGraphs("./graphs/icalp/icalp",arr_years,true)
+println("Plot Enriched created")
+println("Done")
