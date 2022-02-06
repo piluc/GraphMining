@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class graph_creator{
+public class graphs_creator{
     public static void main(String [] args) {
 
     String fileName = "icalp.txt";
