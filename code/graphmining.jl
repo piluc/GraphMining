@@ -1,3 +1,4 @@
+using Distributions
 using EzXML
 using Graphs
 using GraphIO
@@ -11,4 +12,5 @@ include("smallworld.jl")
 include("verysmallworld.jl")
 include("centralitymeasures.jl")
 include("bowtie.jl")
+include("models.jl")
 include("temporalgraph.jl")
