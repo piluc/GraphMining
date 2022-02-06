@@ -64,11 +64,10 @@ function argmaxCC(cc::Vector{Vector{Int64}})
     return a
 end
 
-function createWeightedGraph(graph::String)::SimpleWeightedGraph{}
-
-    open(graph) do f
+function createWeightedGraph(graphPath::String)::SimpleWeightedGraph
+    open(graphPath) do f
         first=readline(f)
-        gw=SimpleWeightedGraph(parse(Int64,split(first,",")[1]))
+        gw=SimpleWeightedGraph(parse(Int64,split(first,",")[2]))
         while !eof(f)
             x=readline(f)
             s=split(x,",")
@@ -79,7 +78,6 @@ function createWeightedGraph(graph::String)::SimpleWeightedGraph{}
         end
         return gw
     end
-    
 end
 
 function calculateApproxDoS(g::SimpleGraph,factor::Int64)::Float64
@@ -87,17 +85,6 @@ function calculateApproxDoS(g::SimpleGraph,factor::Int64)::Float64
 end
 
 function createMatrix3DWGraph(p::String,years::Vector{String},enriched::Bool)
-    # Author=Dict{Int64,String}()
-    # load("./icalp_id_author.txt") do f
-    #     while ! eof(f)      
-    #         s = readline(f)
-    #         ss= split(s," ")
-    #         id= ss[1]
-    #         len_id=length(ss[1])
-    #         name= SubString(s,len_id+1)
-    #         Author[id]=name
-    #     end
-    # end
     for i in years
         if (enriched==false)
             gw = createWeightedGraph(p*i*".lg")
@@ -128,14 +115,14 @@ function createMatrix3DWGraph(p::String,years::Vector{String},enriched::Bool)
 end
 
 function cc_new_node_count(cc1::Vector{Int64},cc2::Vector{Int64})::Int64
-    return sizeof(cc1)-sizeof(cc2)
+    return size(cc1,1)-size(cc2,1)
 end
 
 function cc_new_node_ratio(cc1::Vector{Int64},cc2::Vector{Int64})::Float64
-    return (sizeof(cc1)-sizeof(cc2))/sizeof(cc2)
+    return (size(cc1,1)-size(cc2,1))/size(cc2,1)
 end
 
-function cc_diff_components(cc1::Vector{Int64},cc2::Vector{Int64})::Int64
+function cc_diff_components(cc1::Vector{Int64},cc2::Vector{Int64})::Bool
     return issubset(cc1,cc2)
 end
 
@@ -149,9 +136,9 @@ function manyPlotsSimpleGraphs(p::String,years::Vector{String},enriched::Bool)
     arr_diameter=Vector{Int64}()
     for (i,j) in zip(years,1:48)
         if (enriched==false)
-            g_temp = loadgraph(p*i*".lg", "graph")
+            g_temp = loadgraph(p*i*".lg")
         else
-            g_temp = loadgraph(p*"Enriched"*i*".lg", "graph")
+            g_temp = loadgraph(p*"Enriched"*i*".lg")
         end
         cc_temp = connected_components(g_temp)
         maxcomponent_temp=cc_temp[ argmaxCC(cc_temp) ]
@@ -168,13 +155,16 @@ function manyPlotsSimpleGraphs(p::String,years::Vector{String},enriched::Bool)
         append!(arr_dos_approx,degrees_of_separation( distance_distribution(g_max_cc_temp,ceil(Int64,35*log(nv(g_max_cc_temp))))))
         append!(arr_dos,degrees_of_separation( distance_distribution(g_max_cc_temp)))
         append!(arr_diameter,diameter( g_max_cc_temp))
+        
+        # println("\nYear = ",i,"\nSize of Graph = ",nv(g_temp),"\nNumber of edges = ",ne(g_temp),"\nSize of maximum connected component = ",size(maxcomponent_temp,1),
+        #     "\nDegree of separation = ",degrees_of_separation( distance_distribution(g_max_cc_temp)),
+        #     "\nDegree of separation approx = ",degrees_of_separation( distance_distribution(g_max_cc_temp,ceil(Int64,35*log(nv(g_max_cc_temp))))))
+        # if (j>1) 
+        #     println("Same component? = ",cc_diff_components(arr_maxcomp[j-1],maxcomponent_temp))
+        # end
     end
 
-    # for (i,j,k,l) in zip(years,arr_maxcomp,arr_dos,arr_dos_approx)
-    #     println("Year = ",i,"\nSize of maximum connected component = ",sizeof(j),"\nDegree of separation = ",k,"\nDegree of separation approx = ",l,"\n")
-    # end
-
-    plot(years,arr_dos,st=:path, title = "Degrees of separation", label = ["DoS" ], lw = 3, yticks = 0:0.5:12,xticks=(1:1:48,arr_years),xrotation = 90)
+    plot(years,arr_dos,st=:path, title = "Degrees of separation", label = ["DoS" ], lw = 3, yticks = 0:0.5:12,xticks=(0:1:48,arr_years),xrotation = 90)
     plot!(years,arr_dos_approx,label = ["DoS_approx" ], lw = 3)
     if (enriched==false)
         png("./images/plotDegreeOfSeparation")
@@ -182,28 +172,28 @@ function manyPlotsSimpleGraphs(p::String,years::Vector{String},enriched::Bool)
         png("./images/plotDegreeOfSeparationEnriched")
     end
 
-    plot(years,arr_sizemaxcomp,label = ["Size max component"], xticks=(1:1:48,arr_years),xrotation = 90,lw=3,yticks = 0:500:4000)
+    plot(years,arr_sizemaxcomp,label = ["Size max component"], xticks=(0:1:48,arr_years),xrotation = 90,lw=3,yticks = 0:500:4000)
     if (enriched==false)
         png("./images/plotSize")
     else
         png("./images/plotSizeEnriched")
     end
     
-    plot(years,arr_newNodes,label = ["New Authors"], xticks=(1:1:48,arr_years),xrotation = 90,lw=3, yticks = 0:100:2000)
+    plot(years,arr_newNodes,label = ["New Authors"], xticks=(0:1:48,arr_years),xrotation = 90,lw=3, yticks = 0:10:250)
     if (enriched==false)
         png("./images/plotNewAuthors")
     else
         png("./images/plotNewAuthorsEnriched")
     end
     
-    plot(years,arr_ratioSize,label = ["Percentage increment new authors"], xticks=(1:1:48,arr_years), xrotation = 90, lw=3,yticks = 0:10:100)
+    plot(years,arr_ratioSize,label = ["Percentage increment new authors"], xticks=(0:1:48,arr_years), xrotation = 90, lw=3,yticks = 0:10:100)
     if (enriched==false)
         png("./images/plotIncrementSize")
     else
         png("./images/plotIncrementSizeEnriched")
     end
     
-    plot(years,arr_diameter,label = ["Diameter"], xticks=(1:1:48,arr_years), xrotation = 90, lw=3,yticks = 0:1:40)
+    plot(years,arr_diameter,label = ["Diameter"], xticks=(0:1:48,arr_years), xrotation = 90, lw=3,yticks = 0:1:40)
     if (enriched==false)
         png("./images/plotDiameter")
     else
