@@ -5,7 +5,9 @@ using Plots
 using SimpleWeightedGraphs
 using MultivariateStats
 using PyCall
-include("using Graphs.jl")
+using DelimitedFiles
+
+include("functionsGraph.jl")
 
 
 arr_years=[
@@ -13,12 +15,24 @@ arr_years=[
             "1990","1991","1992","1993","1994","1995","1996","1997","1998","1999","2000","2001","2002","2003","2004","2005",
             "2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021"
         ]
-createMatrix3DWGraph("./graphs/icalpw/icalpw",arr_years,false)
-println("Matrix3D created")
-createMatrix3DWGraph("./graphs/icalpw/icalpw",arr_years,true)
-println("Matrix3D Enriched created")
-manyPlotsSimpleGraphs("./graphs/icalp/icalp",arr_years,false)
-println("Plot simple created")
-manyPlotsSimpleGraphs("./graphs/icalp/icalp",arr_years,true)
-println("Plot Enriched created")
+conferences=["icalp","focs","stoc"]
+Dict_conf = Dict{String, Vector{String}}(
+    "icalp" => ["./graphs/icalp/icalp","./graphs/icalpw/icalpw"],
+    "focs" =>  ["./graphs/focs/focs","./graphs/focsw/focsw"],
+    "stoc" =>  ["./graphs/stoc/stoc","./graphs/stocw/stocw"]
+    )
+
+
+for conf in conferences
+    #createMatrix3DWGraph(Dict_conf[conf][2],arr_years,false)
+    #println("Matrix3D "*conf*" created")
+    #createMatrix3DWGraph(Dict_conf[conf][2],arr_years,true)
+    #println("Matrix3D Enriched "*conf*" created")
+    manyPlotsSimpleGraphs(Dict_conf[conf][1],arr_years,false,conf)
+    println("Plot "*conf*" simple created")
+    #manyPlotsSimpleGraphs(Dict_conf[conf][1],arr_years,true,conf)
+    #println("Plot "*conf*" Enriched created")
+end
+
 println("Done")
+
