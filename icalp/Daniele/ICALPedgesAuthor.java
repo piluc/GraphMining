@@ -6,7 +6,6 @@
  */
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,8 +20,6 @@ import org.dblp.mmdb.TableOfContents;
 import org.xml.sax.SAXException;
 
 class ICALPedgesAuthor {
-    static Comparator<Person> cmp = (Person o1,
-            Person o2) -> o1.getPrimaryName().name().compareTo(o2.getPrimaryName().name());
 
     public static RecordDbInterface read_xml_file() {
         String dblpXmlFilename = "dblp.xml";
@@ -45,71 +42,6 @@ class ICALPedgesAuthor {
         return dblp;
     }
 
-    public static int analyse_toc(int year, Map<String, Integer> author_id, int current_id,
-            Map<Person, Integer> authors, TableOfContents toc,
-            BufferedWriter tg_bw) {
-        for (Publication publ : toc.getPublications()) {
-            for (PersonName name : publ.getNames()) {
-                Person pers = name.getPerson();
-                if (!authors.containsKey(pers)) {
-                    authors.put(pers, 1);
-                }
-            }
-        }
-        return update_tg(year, author_id, current_id, toc, tg_bw);
-    }
-
-    public static int analyse_toc(int year, Map<String, Integer> author_id, int current_id, TableOfContents toc,
-            BufferedWriter tg_bw) {
-        Map<Person, Integer> authors = new TreeMap<>(cmp);
-        for (Publication publ : toc.getPublications()) {
-            for (PersonName name : publ.getNames()) {
-                Person pers = name.getPerson();
-                if (!authors.containsKey(pers)) {
-                    authors.put(pers, 1);
-                }
-            }
-        }
-        System.out.format("%d\t %d \t %d\n", year, toc.getPublications().size(), authors.size());
-        return update_tg(year, author_id, current_id, toc, tg_bw);
-    }
-
-    public static int update_tg(int year, Map<String, Integer> author_id, int current_id, TableOfContents toc,
-            BufferedWriter tg_bw) {
-        try {
-            for (Publication publ : toc.getPublications()) {
-                String[] author_name = new String[publ.getNames().size()];
-                int current_author = 0;
-                for (PersonName name : publ.getNames()) {
-                    author_name[current_author] = name.getPrimaryName().name();
-                    current_author = current_author + 1;
-                    Person pers = name.getPerson();
-                    if (!author_id.containsKey(pers.getPrimaryName().name())) {
-                        author_id.put(pers.getPrimaryName().name(), current_id);
-                        current_id = current_id + 1;
-                    }
-                }
-                for (int a1 = 0; a1 < author_name.length; a1++) {
-                    for (int a2 = a1 + 1; a2 < author_name.length; a2++) {
-                        int id1 = author_id.get(author_name[a1]);
-                        int id2 = author_id.get(author_name[a2]);
-                        if (id1 < id2) {
-                            tg_bw.write(id1 + " " + id2 + " " + year
-                                    + "\n");
-                        } else {
-                            tg_bw.write(id2 + " " + id1 + " " + year
-                                    + "\n");
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(-1);
-        }
-        return current_id;
-    }
-
     public static void main(String[] args) {
         System.setProperty("entityExpansionLimit", "10000000");
         RecordDbInterface dblp = read_xml_file();
@@ -118,10 +50,6 @@ class ICALPedgesAuthor {
             
             Integer[] arr_years={1972,1974,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,
                 1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021};
-            //Comparator<Person> cmp = (Person o1,
-            //        Person o2) -> o1.getPrimaryName().name().compareTo(o2.getPrimaryName().name());
-            //Comparator<Publication> cmp_pub = (Publication p1,
-            //    Publication p2) -> p1.getKey().compareTo(p2.getKey());
 
             //Loading the map between authors and integers
             String line=null;
@@ -218,3 +146,4 @@ class ICALPedgesAuthor {
         System.out.println("Done.");
     }
 }
+
