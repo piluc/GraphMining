@@ -64,22 +64,6 @@ function argmaxCC(cc::Vector{Vector{Int64}})
     return a
 end
 
-function createWeightedGraph(graphPath::String)::SimpleWeightedGraph
-    open(graphPath) do f
-        first=readline(f)
-        gw=SimpleWeightedGraph(parse(Int64,split(first,",")[2]))
-        while !eof(f)
-            x=readline(f)
-            s=split(x,",")
-            u=parse(Int64,s[1])
-            v=parse(Int64,s[2])
-            w=parse(Int64,s[3])
-            add_edge!(gw,u,v,1/w)
-        end
-        return gw
-    end
-end
-
 function calculateApproxDoS(g::SimpleGraph,factor::Int64)::Float64
     return degrees_of_separation( distance_distribution(g,ceil(Int64,factor*log(nv(g)))))
 end
@@ -87,9 +71,9 @@ end
 function createMatrix3DWGraph(p::String,years::Vector{String},enriched::Bool)
     for i in years
         if (enriched==false)
-            gw = createWeightedGraph(p*i*".lg")
+            gw = loadgraph(p*i*".lg",SWGFormat())
         else
-            gw = createWeightedGraph(p*"Enriched"*i*".lg")
+            gw = loadgraph(p*"Enriched"*i*".lg",SWGFormat())
         end
         
         gw_ccs=connected_components(gw)
