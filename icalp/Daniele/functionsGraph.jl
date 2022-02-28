@@ -68,12 +68,29 @@ function calculateApproxDoS(g::SimpleGraph,factor::Int64)::Float64
     return degrees_of_separation( distance_distribution(g,ceil(Int64,factor*log(nv(g)))))
 end
 
+function loadWeightedGraph(p::String)::SimpleWeightedGraph
+    f = open(p, "r")
+    s=readline(f)
+    nv=parse(Int64,split(s,",")[2])
+    gw=SimpleWeightedGraph(nv)
+    while ! eof(f) 
+        # read a new / next line for every iteration          
+        s = readline(f)       
+        u,v,w=split(s,",")
+        u=parse(Int64,u)
+        v=parse(Int64,v)
+        w=parse(Int64,w)
+        add_edge!(gw,u,v,1/w)
+     end
+     return gw
+end
+
 function createMatrix3DWGraph(p::String,years::Vector{String},enriched::Bool)
     for i in years
         if (enriched==false)
-            gw = loadgraph(p*i*".lg",SWGFormat())
+            gw= loadWeightedGraph(p*i*".lg")
         else
-            gw = loadgraph(p*"Enriched"*i*".lg",SWGFormat())
+            gw= loadWeightedGraph(p*"Enriched"*i*".lg")
         end
         
         gw_ccs=connected_components(gw)
@@ -85,15 +102,20 @@ function createMatrix3DWGraph(p::String,years::Vector{String},enriched::Bool)
             ds=dijkstra_shortest_paths(gw_max_cc,i)
             for j in 1:nvertex
                 matrix_dijkstra[i,j]=ds.dists[j]
+                matrix_dijkstra[j,i]=ds.dists[j]
             end
         end
-        matrix_dijkstra_mvs=classical_mds(matrix_dijkstra,3)
         np = pyimport("numpy")
-        data = np.asarray(matrix_dijkstra_mvs)
+        
+        matrix_dijkstra_mvs=classical_mds(matrix_dijkstra,3)
+        
         if (enriched==false)
             np.save(p*i*"_mvsMatrix.npy",matrix_dijkstra_mvs)
+            np.save(p*i*"_distMatrix.npy",matrix_dijkstra)
         else
             np.save(p*"Enriched"*i*"_mvsMatrix.npy",matrix_dijkstra_mvs)
+            np.save(p*"Enriched"*i*"_distMatrix.npy",matrix_dijkstra)
+
         end
     end
 end
