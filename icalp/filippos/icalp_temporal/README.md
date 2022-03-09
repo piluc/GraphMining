@@ -9,5 +9,6 @@ cd cmake-build-release
 cmake -DCMAKE_BUILD_TYPE=Release ..
 make
 ```
-5. Run: `./twc $PATH/twc-main/datasets/icalp.txt 0 -u=0 -k=10 -c=0 -a=0.1`
-6. Find name of authors by running `findauthors.py`
+5. Move `icalp.txt` to `$PATH/twc-main/datasets/`
+6. Run: `./twc $PATH/twc-main/datasets/icalp.txt 0 -u=0 -k=10 -c=0 -a=0.1`
+7. Find name of authors by running `findauthors.py`
