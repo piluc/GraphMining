@@ -1,5 +1,7 @@
 # GraphMining
-This is the repository associated with the lecture notes *Graph Mining: Efficient Julia Programs for Understanding Our World*. It contains the PDF file of the lecture notes and the Julia code included in the notes themselves.
+These lecture notes intend to be an introduction to the algorithmic aspects present in the analysis of social networks (in general, of graphs). In particular, since data relating to gigantic social networks have been available for several years, the lecture notes intend at the same time to provide the basic definitions used in the context of social networks and the algorithmic tools that make it possible to apply these definitions also to very large social networks. All the algorithms described in the lecture notes are available in this repository, written in the Julia programming language, and can therefore be used for the analysis of real social networks.
+
+This repository contains the PDF file of the lecture notes and the Julia code included in the notes themselves.
 
 The associated HTML slides are available at the following addresses.
 
