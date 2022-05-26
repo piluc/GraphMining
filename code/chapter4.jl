@@ -1,4 +1,5 @@
 
+# Section 4.1.1
 function correlations(graph::String)::Array{Array{Float64}}
     g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
     d::Array{Float64} = degree_centrality(g)
@@ -8,6 +9,7 @@ function correlations(graph::String)::Array{Array{Float64}}
     return [[cor(d, e), cor(d, c), cor(d, b)], [cor(e, c), cor(e, b)], [cor(c, b)]]
 end
 
+# Section 4.3.2
 function apx_closeness(graph::String, k::Int64)::Array{Float64}
     g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
     farness::Array{Float64} = zeros(Float64, nv(g))
@@ -17,6 +19,7 @@ function apx_closeness(graph::String, k::Int64)::Array{Float64}
     return (k * (nv(g) - 1)) ./ (nv(g) .* farness)
 end
 
+# Section 4.3.3
 function florence_top_apx_closeness_three_nodes()::Nothing
     g::SimpleGraph{Int64} = loadgraph("graphs/florence.lg", "graph")
     isMax = zeros(Int64, nv(g))
@@ -35,13 +38,14 @@ function florence_top_apx_closeness_three_nodes()::Nothing
     println(isMax)
 end
 
+# Section 4.3.3
 function check_top_apx_closeness(graph::String, kfactor::Int64, top_node::Int64, pos::Int64, ne::Int64)::Int64
     g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
     k::Int64 = kfactor * trunc(log2(nv(g)))
     ns::Int64 = 0
     for _ in 1:ne
         kappa = apx_closeness(graph, k)
-        m = partialsortperm(kappa, 1:pos, rev = true)
+        m = partialsortperm(kappa, 1:pos, rev=true)
         if top_node in m
             ns = ns + 1
         end
@@ -49,6 +53,7 @@ function check_top_apx_closeness(graph::String, kfactor::Int64, top_node::Int64,
     return ns
 end
 
+# Section 4.4
 function prunedBFS(g::SimpleGraph{Int64}, source::Int64, topk::Float64)
     visited::Array{Bool} = falses(nv(g))
     cur_level::Array{Int64}, next_level::Array{Int64} = Vector(), Vector()
@@ -76,10 +81,11 @@ function prunedBFS(g::SimpleGraph{Int64}, source::Int64, topk::Float64)
     return (nv(g) - 1) / farness
 end
 
+# Section 4.4
 function top_closeness(graph::String)::Tuple{Int64,Float64}
     g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
     top_node::Int64, top_kappa::Float64 = 0, 0.0
-    d::Array{Int64} = sortperm(degree(g), rev = true)
+    d::Array{Int64} = sortperm(degree(g), rev=true)
     for v in 1:nv(g)
         kappa_v::Float64 = prunedBFS(g, d[v], top_kappa)
         if (kappa_v > 0)
@@ -89,6 +95,7 @@ function top_closeness(graph::String)::Tuple{Int64,Float64}
     return top_node, top_kappa
 end
 
+# Section 4.4
 function top_closeness_textbook(graph::String)::Tuple{Int64,Float64}
     g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
     c = closeness_centrality(g)

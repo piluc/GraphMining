@@ -1,3 +1,4 @@
+# Section 7.3
 function t_distance(fn::String, isdir::Bool, s::Int64, n::Int64, t::Int64)::Array{Int64}
     distance::Array{Int64} = fill(typemax(Int64), n)
     distance[s] = t - 1
@@ -20,6 +21,7 @@ function t_distance(fn::String, isdir::Bool, s::Int64, n::Int64, t::Int64)::Arra
     return distance .- t .+ 1
 end
 
+# Section 7.3
 function t_distance(fn::String, isdir::Bool, s::Int64, n::Int64, ta::Int64, to::Int64)::Array{Int64}
     distance::Array{Int64} = fill(typemax(Int64), n)
     distance[s] = ta - 1
@@ -42,6 +44,7 @@ function t_distance(fn::String, isdir::Bool, s::Int64, n::Int64, ta::Int64, to::
     return distance .- ta .+ 1
 end
 
+# Section 7.3.1
 function neighborhood_function(fn::String, isdir::Bool, n::Int64, ta::Int64, to::Int64)::Float64
     reachable_pairs::Int64 = 0
     for source in 1:n
@@ -55,6 +58,7 @@ function neighborhood_function(fn::String, isdir::Bool, n::Int64, ta::Int64, to:
     return reachable_pairs / (n^2)
 end
 
+# Section 7.3.1
 function reachability_diagram(fn::String, isdir::Bool, n::Int64, tm::Int64, tM::Int64, d::Int64)
     ta = tm
     to = ta + d

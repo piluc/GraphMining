@@ -1,6 +1,7 @@
+# Section 5.2
 function number_triangles(graph::String)
     g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
-    d::Array{Int64} = degree_centrality(g, normalize = false)
+    d::Array{Int64} = degree_centrality(g, normalize=false)
     c::Int64 = 0
     for u in 1:nv(g)
         for v in neighbors(g, u)
@@ -18,6 +19,7 @@ function number_triangles(graph::String)
     return c
 end
 
+# Section 5.5.1
 function bowtie(graph::String)::Array{Int64}
     g::SimpleDiGraph{Int64} = loadgraph("graphs/" * graph, "graph")
     group::Array{Int64} = zeros(Int64, nv(g))
@@ -35,6 +37,7 @@ function bowtie(graph::String)::Array{Int64}
     return group
 end
 
+# Section 5.5.1
 function group_out(g::SimpleDiGraph{Int64}, u::Int64, group::Array{Int64})::Nothing
     visited::Array{Bool} = falses(nv(g))
     queue::Array{Int64} = Vector()
@@ -54,6 +57,7 @@ function group_out(g::SimpleDiGraph{Int64}, u::Int64, group::Array{Int64})::Noth
     end
 end
 
+# Section 5.5.1
 function group_in(g::SimpleDiGraph{Int64}, u::Int64, group::Array{Int64})::Nothing
     rg::SimpleDiGraph{Int64} = reverse(g)
     visited::Array{Bool} = falses(nv(rg))
@@ -74,6 +78,7 @@ function group_in(g::SimpleDiGraph{Int64}, u::Int64, group::Array{Int64})::Nothi
     end
 end
 
+# Section 5.5.1
 function group_tendril_in(g::SimpleDiGraph{Int64}, group::Array{Int64})::Nothing
     visited::Array{Bool} = falses(nv(g))
     queue::Array{Int64} = Vector()
@@ -100,6 +105,7 @@ function group_tendril_in(g::SimpleDiGraph{Int64}, group::Array{Int64})::Nothing
     end
 end
 
+# Section 5.5.1
 function group_tendril_out(g::SimpleDiGraph{Int64}, group::Array{Int64})::Nothing
     rg::SimpleDiGraph{Int64} = reverse(g)
     visited::Array{Bool} = falses(nv(rg))

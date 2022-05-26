@@ -8,9 +8,9 @@ using SortingAlgorithms
 using Statistics
 using StatsBase
 
-include("smallworld.jl")
-include("verysmallworld.jl")
-include("centralitymeasures.jl")
-include("bowtie.jl")
-include("models.jl")
-include("temporalgraph.jl")
+include("chapter2.jl")
+include("chapter3.jl")
+include("chapter4.jl")
+include("chapter5.jl")
+include("chapter6.jl")
+include("chapter7.jl")

@@ -1,14 +1,16 @@
+# Section 6.1
 function degree_distribution(graph::String)::Vector{Float64}
     g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
-    d::Array{Int64} = degree_centrality(g, normalize = false)
+    d::Array{Int64} = degree_centrality(g, normalize=false)
     return [count(==(i), d) for i in 1:maximum(d)] ./ nv(g)
 end
 
+# Section 6.1
 function pareto(graph::String, perc::Float64, r::Bool)::Float64
     g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
     n_bottom::Int64 = trunc(nv(g) * perc)
-    d::Array{Int64} = degree_centrality(g, normalize = false)
-    p::Array{Int64} = sortperm(d, rev = r)
+    d::Array{Int64} = degree_centrality(g, normalize=false)
+    p::Array{Int64} = sortperm(d, rev=r)
     sg::SimpleGraph{Int64}, _ = induced_subgraph(g, p[1:n_bottom])
     n_owned_edges::Int64 = 0
     for i in 1:n_bottom
@@ -18,6 +20,7 @@ function pareto(graph::String, perc::Float64, r::Bool)::Float64
     return n_owned_edges / ne(g)
 end
 
+# Section 6.2.1
 function directed_erdos_renyi(n::Int64, p::Float64)::SimpleDiGraph{Int64}
     g::SimpleDiGraph{Int64} = SimpleDiGraph{Int64}(n)
     gd::Geometric{Float64} = Geometric(p)
@@ -34,6 +37,7 @@ function directed_erdos_renyi(n::Int64, p::Float64)::SimpleDiGraph{Int64}
     return g
 end
 
+# Section 6.2.1
 function erdos_renyi(n::Int64, p::Float64)::SimpleGraph{Int64}
     g::SimpleGraph{Int64} = SimpleGraph{Int64}(n)
     gd::Geometric{Float64} = Geometric(p)
@@ -59,8 +63,7 @@ function nodes2edge(n::Int64, u::Int64, v::Int64)::Int64
     return (n * (n - 1) / 2) - ((n - (u - 1)) * (n - (u - 1) - 1) / 2) + v - u - 1
 end
 
-# Generate Erdos-Renyi graph between the set of nodes [n1] and
-# the set of nodes [n2]. If n1=n2=n, the result is G_{n,p}.
+# Section 6.3
 function bipartite_erdos_renyi(n1::Int64, n2::Int64, p::Float64)
     gd::Geometric{Float64} = Geometric(p)
     edges::Vector{Pair{Int64,Int64}} = []
@@ -76,7 +79,7 @@ function bipartite_erdos_renyi(n1::Int64, n2::Int64, p::Float64)
     return edges
 end
 
-# Compute regions of nodes with same degree
+# Section 6.3
 function compute_regions(degree_sequence::Vector{Int64})::Vector{Pair{Int64,Int64}}
     n::Int64 = 1
     regions::Vector{Pair{Int64,Int64}} = []
@@ -92,8 +95,8 @@ function compute_regions(degree_sequence::Vector{Int64})::Vector{Pair{Int64,Int6
     return regions
 end
 
-# Generate Chung-Lu graph
-function chung_lu(degree_sequence::Vector{Int64}; verbose = false)::Vector{Pair{Int64,Int64}}
+# Section 6.3
+function chung_lu(degree_sequence::Vector{Int64}; verbose=false)::Vector{Pair{Int64,Int64}}
     regions::Vector{Pair{Int64,Int64}} = compute_regions(degree_sequence)
     volume = sum(degree_sequence)
     if (verbose)
@@ -108,14 +111,10 @@ function chung_lu(degree_sequence::Vector{Int64}; verbose = false)::Vector{Pair{
         end
         for col_region_index in 1:length(regions)
             col_region = regions[col_region_index]
-            # println("   ER graph to region ", col_region_index, ": ", col_region)
             p = (degree_sequence[row_region.first] * degree_sequence[col_region.first]) / volume
-            # println("      ER probability: ", p)
             row_region_size = row_region.second - row_region.first + 1
             col_region_size = col_region.second - col_region.first + 1
-            # println("      ", row_region_size, " rows and ", col_region_size, " columns")
             er_edges = bipartite_erdos_renyi(row_region_size, col_region_size, p)
-            # println("      ", length(er_edges), " edge(s) generated")
             for edge in er_edges
                 r = edge.first
                 c = edge.second
