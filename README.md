@@ -12,6 +12,4 @@ The associated HTML slides are available at the following addresses.
 5. [Giant components and bow-tie graphs](https://slides.com/piluc/graph-mining-05?token=uqwkIFfJ)
 6. [Graphs over time](https://slides.com/piluc/graph-mining-06?token=Srdg4mHr)
 
-[comment]: <> An interactive version of Sections 1.1, 1.2, 1.3, and 1.4 is available as a [Pluto notebook](https://natema.github.io/ECMJ-it/lectures/lezione_4.0.5_graph_mining_by_crescenzi.jl).
-
 Please report any error, comment, or suggestion to `pierluigi.crescenzi@gssi.it`.
