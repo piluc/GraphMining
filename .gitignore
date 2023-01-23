@@ -24,7 +24,6 @@ docs/site/
 Manifest.toml
 
 # Graphs
-graphs/
 local/
 .vscode/
 
