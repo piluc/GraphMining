@@ -1,3 +1,7 @@
+using Graphs
+using LinearAlgebra
+using StatsBase
+
 # Section 2.2
 function distances(graph::String, x::Int64)::Array{Int64}
     g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
@@ -50,6 +54,7 @@ function distance_distribution(graph::String, k::Int64)::Array{Float64}
 end
 
 # Section 2.5.2
+# Write to the author for having the graphs
 function imdb_degrees_separation(f_year::Int64, l_year::Int64, step::Int64)::Array{Float64}
     ds::Array{Float64} = zeros(1 + (l_year - f_year) ÷ step)
     for year in f_year:step:l_year
