@@ -1,4 +1,5 @@
 using Graphs
+
 g = loadgraph("graphs/japan.lg", "graph")
 p = bfs_parents(g, 1)
 println(p)
