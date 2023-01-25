@@ -1,3 +1,6 @@
+using Graphs
+using SortingAlgorithms
+
 # Section 3.2.1
 function diameter_lower_upper_bound(graph::String)::Tuple{Int64,Int64}
     g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
