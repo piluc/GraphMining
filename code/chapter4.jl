@@ -1,3 +1,5 @@
+using Graphs
+using Statistics
 
 # Section 4.1.1
 function correlations(graph::String)::Array{Array{Float64}}
