@@ -1,4 +1,36 @@
+using Graphs
+
 # Section 5.2
+function naive_number_triangles(graph::String)
+    g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
+    c::Int64 = 0
+    for u in 1:nv(g)
+        for v in (u+1):nv(g)
+            for w in (v+1):nv(g)
+                if (has_edge(g, u, v) && has_edge(g, u, w) && has_edge(g, v, w))
+                    c = c + 1
+                end
+            end
+        end
+    end
+    return c
+end
+
+function better_number_triangles(graph::String)
+    g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
+    c::Int64 = 0
+    for u in 1:nv(g)
+        for v in neighbors(g, u)
+            for w in neighbors(g, u)
+                if (v != w && has_edge(g, v, w))
+                    c = c + 1
+                end
+            end
+        end
+    end
+    return c / 6
+end
+
 function number_triangles(graph::String)
     g::SimpleGraph{Int64} = loadgraph("graphs/" * graph, "graph")
     d::Array{Int64} = degree_centrality(g, normalize=false)
