@@ -59,7 +59,7 @@ function bowtie(graph::String)::Array{Int64}
     lscc_index::Int64 = argmax(length.(scc))
     lscc::Array{Int64} = scc[lscc_index]
     println("|SCC|=", length(lscc))
-    for u in 1:length(lscc)
+    for u in 1:lastindex(lscc)
         group[lscc[u]] = 1
     end
     group_out(g, lscc[1], group)

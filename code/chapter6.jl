@@ -104,12 +104,12 @@ function chung_lu(degree_sequence::Vector{Int64}; verbose=false)::Vector{Pair{In
         println("Sum of degrees: ", volume)
     end
     edges::Vector{Pair{Int64,Int64}} = []
-    for row_region_index in 1:length(regions)
+    for row_region_index in 1:lastindex(regions)
         row_region = regions[row_region_index]
         if (verbose)
             println("ER graphs from region ", row_region_index, ": ", row_region)
         end
-        for col_region_index in 1:length(regions)
+        for col_region_index in 1:lastindex(regions)
             col_region = regions[col_region_index]
             p = (degree_sequence[row_region.first] * degree_sequence[col_region.first]) / volume
             row_region_size = row_region.second - row_region.first + 1
