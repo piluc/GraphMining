@@ -10,7 +10,7 @@ The associated HTML slides are available at the following addresses.
 3. [A very small world](https://pilucrescenzi.it/slides/gm/gm03/)
 4. [Centrality measures](https://pilucrescenzi.it/slides/gm/gm04/)
 5. [Giant components and bow-tie graphs](https://pilucrescenzi.it/slides/gm/gm05/)
-6. [Graphs over time](https://slides.com/pilucrescenzi.it/slides/gm/gm06/)
+6. [Graphs over time](https://pilucrescenzi.it/slides/gm/gm06/)
 
 There are also slides on [link prediction](https://pilucrescenzi.it/slides/gm/gma01/), mostly inspired by [Chapter 9](http://infolab.stanford.edu/~ullman/mmds/ch9.pdf) of the book [Mining of Massive Datasets](http://www.mmds.org) by Jure Leskovec, Anand Rajaraman, and Jeff Ullman.
 
