@@ -5,13 +5,13 @@ This repository contains the PDF file of the lecture notes and the Julia code in
 
 The associated HTML slides are available at the following addresses.
 
-1. [Introduction](https://slides.com/piluc/graph-mining-01?token=_epF12dA)
-2. [A small world](https://slides.com/piluc/graph-mining-02?token=UEi_dwFF)
-3. [A very small world](https://slides.com/piluc/graph-mining-03?token=OA9CLFA-)
-4. [Centrality measures](https://slides.com/piluc/graph-mining-04?token=EbBDVttE)
-5. [Giant components and bow-tie graphs](https://slides.com/piluc/graph-mining-05?token=uqwkIFfJ)
-6. [Graphs over time](https://slides.com/piluc/graph-mining-06?token=Srdg4mHr)
+1. [Introduction](https://pilucrescenzi.it/slides/gm/gm01/)
+2. [A small world](https://pilucrescenzi.it/slides/gm/gm02/)
+3. [A very small world](https://pilucrescenzi.it/slides/gm/gm03/)
+4. [Centrality measures](https://pilucrescenzi.it/slides/gm/gm04/)
+5. [Giant components and bow-tie graphs](https://pilucrescenzi.it/slides/gm/gm05/)
+6. [Graphs over time](https://slides.com/pilucrescenzi.it/slides/gm/gm06/)
 
-There are also slides on [link prediction](https://slides.com/piluc/graph-mining-appendix-01?token=RYpdrAlO), mostly inspired by [Chapter 9](http://infolab.stanford.edu/~ullman/mmds/ch9.pdf) of the book [Mining of Massive Datasets](http://www.mmds.org) by Jure Leskovec, Anand Rajaraman, and Jeff Ullman.
+There are also slides on [link prediction](https://pilucrescenzi.it/slides/gm/gma01/), mostly inspired by [Chapter 9](http://infolab.stanford.edu/~ullman/mmds/ch9.pdf) of the book [Mining of Massive Datasets](http://www.mmds.org) by Jure Leskovec, Anand Rajaraman, and Jeff Ullman.
 
 Please report any error, comment, or suggestion to `pierluigi.crescenzi@gssi.it`.
